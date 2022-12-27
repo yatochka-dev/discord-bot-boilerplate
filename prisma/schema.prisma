@@ -1,0 +1,14 @@
+generator client {
+    provider = "prisma-client-py"
+    interface = "asyncio"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+model Guild {
+    id String @id
+}
