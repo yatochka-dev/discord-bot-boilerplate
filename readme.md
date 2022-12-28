@@ -33,6 +33,13 @@ cd <YOUR_PROJECT_NAME>
 
 ```bash
 python -m venv <YOUR_VENV_NAME>
+
+# Windows
+<YOUR_VENV_NAME>\Scripts\activate
+
+# Linux
+source <YOUR_VENV_NAME>/bin/activate
+
 ```
 
 ### Install the requirements
@@ -59,6 +66,8 @@ prisma generate
 
 prisma migrate dev --name init
 ```
+
+!!!Don't forget to activate your venv before generating prisma!!!
 
 ### Run the bot
 
