@@ -13,7 +13,7 @@ class Events(Cog, GuildService):
     @Cog.listener(
         "on_ready",
     )
-    async def bot_is_ready(self):
+    async def is_ready(self):
         self.bot.logger.info(
             f"Logged in as {self.bot.user} (ID: {self.bot.user.id})"
         )
@@ -36,14 +36,14 @@ class Events(Cog, GuildService):
     @Cog.listener(
         "on_guild_join",
     )
-    async def bot_joined_guild(self, guild):
+    async def joined_guild(self, guild):
         await self.add_guild(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
     @Cog.listener(
         "on_guild_remove",
     )
-    async def bot_quit_guild(self, guild):
+    async def quit_guild(self, guild):
         await self.remove_guild(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
 
