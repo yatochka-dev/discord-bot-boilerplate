@@ -1,2 +1,2 @@
-from .bot import *
-from .db import *
+from .bot import Bot  # noqa
+from .db import prisma  # noqa
