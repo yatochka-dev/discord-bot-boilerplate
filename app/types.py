@@ -1,3 +1,4 @@
+import disnake
 from disnake import ApplicationCommandInteraction
 
 # CommandInteraction type is used for slash commands
@@ -7,3 +8,6 @@ from disnake import ApplicationCommandInteraction
 CommandInteraction = ApplicationCommandInteraction
 
 # ... you can add your custom types and enums here
+
+
+DiscordUtilizer = disnake.ClientUser | disnake.Member | disnake.User
