@@ -6,7 +6,9 @@ from pydantic import BaseSettings
 from .loggs import logger, disnake_logger
 from .db import prisma
 
-__all__ = ["Bot"]
+__all__ = [
+    "Bot",
+]
 
 
 class AppSettings(BaseSettings):

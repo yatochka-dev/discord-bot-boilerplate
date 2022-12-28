@@ -3,6 +3,8 @@ import sys
 
 from colorama import Fore, Style, Back
 
+__all__ = ["logger", "disnake_logger"]
+
 FORMATS = {
     logging.DEBUG: Fore.CYAN,
     logging.INFO: Fore.BLUE,
@@ -16,28 +18,28 @@ red_column = Fore.LIGHTRED_EX + ":" + Style.RESET_ALL
 red_dash = Fore.LIGHTRED_EX + " - " + Style.RESET_ALL
 
 FORMAT = (
-    Fore.GREEN
-    + "%(asctime)s "
-    + Style.RESET_ALL
-    + red_stick
-    + "{primary_color}\033[1m%(levelname)s\033[0m{spaces}"
-    + red_stick
-    + Fore.CYAN
-    + "%(filename)s"
-    + red_column
-    + Fore.CYAN
-    + "%(name)s"
-    + red_column
-    + Fore.CYAN
-    + "%(lineno)d"
-    + red_dash
-    + "{secondary_color}%(message)s"
-    + Style.RESET_ALL
+        Fore.GREEN
+        + "%(asctime)s "
+        + Style.RESET_ALL
+        + red_stick
+        + "{primary_color}\033[1m%(levelname)s\033[0m{spaces}"
+        + red_stick
+        + Fore.CYAN
+        + "%(filename)s"
+        + red_column
+        + Fore.CYAN
+        + "%(name)s"
+        + red_column
+        + Fore.CYAN
+        + "%(lineno)d"
+        + red_dash
+        + "{secondary_color}%(message)s"
+        + Style.RESET_ALL
 )
 
 
 def get_format_spaces(record: int):
-    _levelToSpaces = {
+    levelToSpaces = {
         logging.CRITICAL: 2,
         logging.ERROR: 5,
         logging.WARNING: 3,
@@ -46,7 +48,7 @@ def get_format_spaces(record: int):
         logging.NOTSET: 4,
     }
 
-    return _levelToSpaces[record]
+    return levelToSpaces[record]
 
 
 def get_format(record: int):
@@ -78,10 +80,6 @@ handler = logging.StreamHandler(stream=sys.stdout)
 handler.setFormatter(CustomFormatter())
 logger.addHandler(handler)
 
-
 disnake_logger = logging.getLogger("disnake")
 disnake_logger.setLevel(logging.WARNING)
 disnake_logger.addHandler(handler)
-
-
-__all__ = ["logger", "disnake_logger"]
