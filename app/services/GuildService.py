@@ -1,4 +1,5 @@
 import disnake
+from prisma import models
 
 from .index import CogService
 
@@ -11,7 +12,7 @@ class GuildService(CogService):
             is not None
         )
 
-    async def add_guild(self, guild: disnake.Guild):
+    async def add_guild(self, guild: disnake.Guild) -> models.Guild:
         self.bot.logger.debug(f"Adding guild: {guild.name} (ID: {guild.id})")
         return await self.bot.prisma.guild.create(data={"id": str(guild.id)})
 
