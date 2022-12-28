@@ -67,7 +67,8 @@ python -m uvicorn main:app --reload
 ```
 
 ## Bot configuration 
-In <YOUR_PROJECT_NAME>.app.bot file you can find class named **AppSettings**. This class contains all the settings for your bot.
+In <YOUR_PROJECT_NAME>.app.bot.py file you can find class named 
+**AppSettings**. This class contains all the settings for your bot.
 Switching between testing and production mode is done by changing the **TESTING** variable.
 
 
