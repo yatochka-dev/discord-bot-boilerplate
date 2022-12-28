@@ -50,14 +50,13 @@ pip install -r requirements.txt
 
 ### Create .env files
 
-- Create a .env.development file in the root directory and fill it like **_.env.example_**
-- Create a .env.production file in the root directory and fill it like _**.env.example**_
+```bash
+python edit_dotenv.py --help 
 
-#### .env.development 
-- this file will be used, when your bot is running in testing mode
+python edit_dotenv.py init # Will create .env files with default values
 
-#### .env.production
-- this file will be used, when your bot is running in production mode
+python edit_dotenv.py new --name <VARIABLE_NAME> # Will create a new variable in both .env files
+```
 
 ### Run the migrations
 
