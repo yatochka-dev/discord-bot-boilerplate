@@ -25,6 +25,8 @@ def get_member_by_id(member_id: int, /):
 
 def get_bot_from_request(request: Request) -> Bot:
     bot: Bot = request.app.state.bot
-    asyncio.run(bot.wait_until_ready())
+
+    if not bot.is_ready():
+        asyncio.run(bot.wait_until_ready())
 
     return bot
