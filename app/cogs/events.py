@@ -23,8 +23,8 @@ class Events(Cog, GuildService):
         self.bot.logger.info("------")
 
         for guild in self.bot.guilds:
-            if not await self.is_guild_exists(guild.id):
-                await self.add_guild(guild)
+            if not await self.exists(guild.id):
+                await self.add(guild)
                 self.bot.logger.info(
                     f"Added guild: {guild.name} (ID: {guild.id})"
                 )
@@ -33,18 +33,19 @@ class Events(Cog, GuildService):
                     f"Guild already exists: {guild.name} (ID: {guild.id})"
                 )
 
+
     @Cog.listener(
         "on_guild_join",
     )
     async def joined_guild(self, guild):
-        await self.add_guild(guild)
+        await self.add(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
     @Cog.listener(
         "on_guild_remove",
     )
     async def quit_guild(self, guild):
-        await self.remove_guild(guild)
+        await self.remove(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
 
 

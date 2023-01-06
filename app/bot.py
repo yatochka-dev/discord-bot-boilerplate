@@ -1,6 +1,8 @@
 import datetime
 from pathlib import Path
 
+import disnake.mixins
+import pydantic.main
 from disnake.ext.commands import InteractionBot
 from pydantic import BaseSettings
 
@@ -8,6 +10,8 @@ from .db import prisma
 from .loggs import logger, disnake_logger
 
 __all__ = ["Bot", "Settings"]
+
+from .types import SupportsIntCast
 
 
 class AppSettings(BaseSettings):
@@ -26,6 +30,21 @@ class AppSettings(BaseSettings):
 Settings = AppSettings()
 
 
+@property
+def snowflake(self):
+    return str(self.id)
+
+
+@property
+def id_(self) -> int | None:
+    if hasattr(self, "snowflake"):
+        snowflake_ = self.snowflake
+        if isinstance(snowflake_, SupportsIntCast):
+            return int(snowflake_)
+
+    return None
+
+
 class Bot(InteractionBot):
     def __init__(self, *args, **kwargs):
         self.APP_SETTINGS = AppSettings()
@@ -33,4 +52,8 @@ class Bot(InteractionBot):
         self.logger = logger
         self.prisma = prisma
         self.disnake_logger = disnake_logger
+
+        disnake.mixins.Hashable.snowflake = snowflake # noqa
+        pydantic.main.BaseModel.id = id_ # noqa
+
         super().__init__(*args, **kwargs)

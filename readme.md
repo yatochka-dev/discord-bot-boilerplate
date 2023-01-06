@@ -79,6 +79,18 @@ In <YOUR_PROJECT_NAME>.app.bot.py file you can find class named
 **AppSettings**. This class contains all the settings for your bot.
 Switching between testing and production mode is done by changing the **TESTING** variable.
 
+## Recommendations
+
+- Add mixins.pyi file to venv/Lib/site-packages/disnake with following content:
+
+```python
+class Hashable:
+
+    @overload
+    @property
+    def snowflake(self) -> str: ...
+```
+
 
 
 

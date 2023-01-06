@@ -1,3 +1,5 @@
+from typing import SupportsInt, Union
+
 import disnake
 from disnake import ApplicationCommandInteraction
 
@@ -11,3 +13,4 @@ CommandInteraction = ApplicationCommandInteraction
 
 
 DiscordUtilizer = disnake.ClientUser | disnake.Member | disnake.User
+SupportsIntCast = Union[SupportsInt, str, bytes, bytearray]

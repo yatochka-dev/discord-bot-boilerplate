@@ -27,11 +27,11 @@ from prisma import models
 # which is the bot instance that has the .prisma attribute
 # which is the prisma client instance
 
-from .index import CogService 
+from .index import AppService 
 
 
 # Create a class that inherits from the CogService class
-class GuildService(CogService):
+class GuildService(AppService):
     
     # Create a method that returns True if the guild is in the database
     # and False if it isn't
@@ -57,7 +57,7 @@ class GuildService(CogService):
 
 ```
 
-Using a service
+Using a service inside of a cog 
 ---------------
 
 ```python
@@ -70,6 +70,7 @@ from app import Bot
 
 # Import the GuildService class
 from app.services.GuildService import GuildService
+
 
 # Create a class that inherits from the Cog class
 # and the GuildService class (Now you have access to the methods from the GuildService class)
@@ -88,12 +89,12 @@ class Events(Cog, GuildService):
             f"Started bot in {os.getenv('STATE_NAME').title()} mode."
         )
         self.bot.logger.info("------")
-        
+
         # Use the is_guild_exists method from the GuildService class
         for guild in self.bot.guilds:
-            if not await self.is_guild_exists(guild.id):
+            if not await self.exists(guild.id):
                 # Use the add_guild method from the GuildService class
-                await self.add_guild(guild)
+                await self.add(guild)
                 self.bot.logger.info(
                     f"Added guild: {guild.name} (ID: {guild.id})"
                 )
@@ -108,7 +109,7 @@ class Events(Cog, GuildService):
     async def bot_joined_guild(self, guild):
         # Use the add_guild method from the GuildService class to add new 
         # guild when the bot joins a new guild 
-        await self.add_guild(guild)
+        await self.add(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
     @Cog.listener(
@@ -117,12 +118,40 @@ class Events(Cog, GuildService):
     async def bot_quit_guild(self, guild):
         # Use the remove_guild method from the GuildService class to remove
         # guild when the bot leaves a guild
-        await self.remove_guild(guild)
+        await self.remove(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
 
 
 def setup(bot: Bot):
     bot.add_cog(Events(bot))
+
+
+```
+
+Using service in the API 
+---------------
+
+```python
+
+# app/apis/guilds.py
+
+from fastapi import APIRouter, Depends
+
+from app.services.GuildService import GuildService
+
+router = APIRouter()
+
+
+@router.get("/guilds/")
+async def getGuilds(service: GuildService = Depends(GuildService)):
+    return await service.get_all()
+
+
+@router.get("/guilds/{guild_id}")
+async def is_guild_exists(
+        guild_id: int, service: GuildService = Depends(GuildService)
+):
+    return await service.exists(guild_id)
 
 
 ```
