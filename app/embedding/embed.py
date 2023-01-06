@@ -66,7 +66,6 @@ class Embed:
             for field in self.fields:
                 c.add_field(**field.to_dict())
 
-
         return c
 
     def as_color(
@@ -107,8 +106,3 @@ class Embed:
 
     def __str__(self):
         return str(self.embed)
-
-
-
-
-

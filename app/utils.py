@@ -1,12 +1,10 @@
 import asyncio
 
 import disnake
-from disnake.mixins import Hashable
 from fastapi import Request
 
 from .bot import Bot
 from .loggs import logger
-
 
 
 def convert_text_to_bold(string: str, /) -> str:
@@ -21,7 +19,6 @@ def get_member_by_id(member_id: int, /):
             f"Member with id {member_id} not found, returned "
             f"{type(member)!r} instead"
         )
-
 
     return member
 

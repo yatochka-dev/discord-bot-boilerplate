@@ -33,7 +33,6 @@ class Events(Cog, GuildService):
                     f"Guild already exists: {guild.name} (ID: {guild.id})"
                 )
 
-
     @Cog.listener(
         "on_guild_join",
     )
