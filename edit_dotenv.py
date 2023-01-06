@@ -44,7 +44,8 @@ def add_variable(name, development, production):
 
     if not development:
         development = click.prompt(
-            "Value of the environment variable for the development environment",
+            "Value of the environment variable for the development "
+            "environment",
             hide_input=True,
         )
 

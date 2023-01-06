@@ -1,7 +1,6 @@
 import asyncio
 import os
 
-import disnake.mixins
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
@@ -9,7 +8,6 @@ from fastapi.middleware.gzip import GZipMiddleware
 from app import Bot
 from app.apis import apis
 from app.db import prisma
-
 
 app = FastAPI()
 app.add_middleware(GZipMiddleware, minimum_size=1000)
