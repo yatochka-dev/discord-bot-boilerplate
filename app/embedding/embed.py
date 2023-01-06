@@ -29,14 +29,12 @@ class EmbedField:
 
 # Custom Embed
 class Embed:
-    BASE_COLOR = disnake.Color.from_rgb(*Settings.RGB_EMBED_COLOR)
     BASE_TIMEZONE = Settings.TIMEZONE
-    MAX_EMBED_LENGTH = 3000
     BASE_AUTHOR_ICON_URL = Settings.ICON_URL
 
     def __init__(
             self,
-            user: disnake.ClientUser | disnake.Member | disnake.User,
+            user: DiscordUtilizer,
             thumbnail: bool = False,
             fields: list[EmbedField] | tuple[EmbedField] = (),
             *args,
@@ -68,16 +66,6 @@ class Embed:
             for field in self.fields:
                 c.add_field(**field.to_dict())
 
-        if (
-                c.description is not None and len(c.description) > 40
-        ) or self.thumbnail:
-            if self.BASE_AUTHOR_ICON_URL:
-                c.set_thumbnail(url=self.BASE_AUTHOR_ICON_URL)
-
-        if len(c) > self.MAX_EMBED_LENGTH:
-            raise Exception(
-                f"Embed length is more than {self.MAX_EMBED_LENGTH} characters"
-            )
 
         return c
 
@@ -94,5 +82,33 @@ class Embed:
         return c
 
     @property
-    def default(self):
+    def no_color(self):
         return self._get_default()
+
+    @property
+    def default(self):
+        return self.as_color(Settings.RGB_DEFAULT_COLOR)
+
+    @property
+    def error(self):
+        return self.as_color(Settings.RGB_ERROR_COLOR)
+
+    @property
+    def success(self):
+        return self.as_color(Settings.RGB_SUCCESS_COLOR)
+
+    @property
+    def warning(self):
+        return self.as_color(Settings.RGB_WARNING_COLOR)
+
+    @property
+    def info(self):
+        return self.as_color(Settings.RGB_INFO_COLOR)
+
+    def __str__(self):
+        return str(self.embed)
+
+
+
+
+

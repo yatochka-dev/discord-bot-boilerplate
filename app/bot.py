@@ -21,7 +21,12 @@ class AppSettings(BaseSettings):
     )
 
     # EMBED SETTINGS
-    RGB_EMBED_COLOR: tuple = (255, 255, 255)
+    RGB_DEFAULT_COLOR: disnake.Color = disnake.Color.from_rgb(255, 255, 255)
+    RGB_ERROR_COLOR: disnake.Color = disnake.Color.from_rgb(255, 0, 0)
+    RGB_SUCCESS_COLOR: disnake.Color = disnake.Color.from_rgb(0, 255, 0)
+    RGB_WARNING_COLOR: disnake.Color = disnake.Color.from_rgb(255, 255, 0)
+    RGB_INFO_COLOR: disnake.Color = disnake.Color.from_rgb(0, 255, 255)
+
     # if none - won't be added
     AUTHOR_DISPLAY_NAME: str | None = None
     ICON_URL: str | None = None
