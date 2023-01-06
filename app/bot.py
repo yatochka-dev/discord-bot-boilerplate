@@ -20,6 +20,8 @@ class AppSettings(BaseSettings):
         offset=datetime.timedelta(hours=3), name="UTC"
     )
 
+    github_link = "https://github.com/yatochka-dev/discord-bot-boilerplate"
+
     # EMBED SETTINGS
     RGB_DEFAULT_COLOR: disnake.Color = disnake.Color.from_rgb(255, 255, 255)
     RGB_ERROR_COLOR: disnake.Color = disnake.Color.from_rgb(255, 0, 0)
@@ -52,6 +54,8 @@ def id_(self) -> int | None:
 
 class Bot(InteractionBot):
     def __init__(self, *args, **kwargs):
+        intents = disnake.Intents.default()
+        intents.members = True
         self.APP_SETTINGS = AppSettings()
         self.BASE_DIR = Path(__file__).resolve().parent.parent
         self.logger = logger
@@ -61,4 +65,4 @@ class Bot(InteractionBot):
         disnake.mixins.Hashable.snowflake = snowflake # noqa
         pydantic.main.BaseModel.id = id_ # noqa
 
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs, intents=intents)
