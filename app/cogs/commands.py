@@ -1,6 +1,7 @@
 from disnake.ext.commands import Cog, slash_command
 
 from app import Bot, md, EmbedField
+from app.decorators import db_required
 from app.embedding import Embed
 from app.services.GuildService import GuildService
 from app.types import CommandInteraction
@@ -11,7 +12,9 @@ class Command(Cog, GuildService):
         self.bot = bot
 
     @slash_command()
+    @db_required
     async def ping(self, interaction: CommandInteraction) -> None:
+        print("Ping command")
         current_latency = round(self.bot.latency * 1000, 2)
 
         match current_latency:
@@ -37,6 +40,7 @@ class Command(Cog, GuildService):
                 user=interaction.user,
             ).as_color(color)
         )
+
 
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:

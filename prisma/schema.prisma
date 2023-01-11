@@ -12,8 +12,28 @@ datasource db {
 
 type DiscordSnowFlake = String @id 
 
+// This model represents a discord guild
+
 model Guild {
     snowflake DiscordSnowFlake @default(cuid())
+    members   Member[]
 }
 
 
+// This model represents discord's user
+
+model User {
+    snowflake DiscordSnowFlake @default(cuid())
+    members   Member[]
+}
+
+// This model represents a member of a guild, like user, but inside of a guild
+ 
+model Member {
+    user   User  @relation(fields: [userId], references: [snowflake])
+    userId String
+    guild   Guild  @relation(fields: [guildId], references: [snowflake])
+    guildId String
+
+    @@id([userId, guildId])
+}

@@ -20,6 +20,12 @@ class AppService:
     def to_safe_snowflake(id_: SupportsIntCast) -> str:
         return disnake.Object(id_).snowflake
 
+    @classmethod
+    def set_bot(cls, bot: Bot):
+        instance = cls()
+        instance.bot = bot
+        return instance
+
 
 class CRUDXService(AppService):
 
