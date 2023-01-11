@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import disnake
 from prisma import models
 
@@ -14,10 +16,11 @@ class GuildService(CRUDXService):
             data={"snowflake": guild.snowflake}
         )
 
-    async def get_guild(self, guild_id: int) -> models.Guild:
+    async def get_guild(self, guild_id: int, include: Mapping[str, bool]) -> models.Guild:
         self.bot.logger.debug(f"Getting guild by id: {guild_id}")
         guild: models.Guild = await self.bot.prisma.guild.find_first(
-            where={"snowflake": self.to_safe_snowflake(guild_id)}
+            where={"snowflake": self.to_safe_snowflake(guild_id)},
+            include=include,
         )
 
         return guild
@@ -25,7 +28,10 @@ class GuildService(CRUDXService):
     async def remove_guild(self, guild: disnake.Guild):
         self.bot.logger.debug(f"Removing guild: {guild.name} (ID: {guild.id})")
         return await self.bot.prisma.guild.delete(
-            where={"snowflake": guild.snowflake}
+            where={"snowflake": guild.snowflake},
+            include={
+                "members": True,
+            }
         )
 
     async def exists_guild(self, guild_id: int) -> bool:
@@ -36,7 +42,6 @@ class GuildService(CRUDXService):
                 )
                 is not None
         )
-
 
     async def get_all_guilds(self) -> list[models.Guild]:
         self.bot.logger.debug("Getting guilds list")
