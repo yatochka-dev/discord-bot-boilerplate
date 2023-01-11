@@ -28,7 +28,6 @@ class AppService:
 
 
 class CRUDXService(AppService):
-
     async def add(self, *args, **kwargs):
         pass
 
@@ -43,6 +42,7 @@ class CRUDXService(AppService):
 
     async def exists(self, *args, **kwargs):
         pass
+
 
 # class APIService(AppService):
 #     bot: Bot

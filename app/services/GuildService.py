@@ -7,16 +7,11 @@ from .index import CRUDXService
 
 
 class GuildService(CRUDXService):
-
     async def add_guild(self, guild: disnake.Guild) -> models.Guild:
-        self.bot.logger.debug(
-            f"Adding guild: {guild.name} (ID: " f"{guild.id})"
-        )
-        return await self.bot.prisma.guild.create(
-            data={"snowflake": guild.snowflake}
-        )
+        self.bot.logger.debug(f"Adding guild: {guild.name} (ID: " f"{guild.id})")
+        return await self.bot.prisma.guild.create(data={"snowflake": guild.snowflake})
 
-    async def get_guild(self, guild_id: int, include: Mapping[str, bool]) -> models.Guild:
+    async def get_guild(self, guild_id: int, include: Mapping[str, bool] = None) -> models.Guild:
         self.bot.logger.debug(f"Getting guild by id: {guild_id}")
         guild: models.Guild = await self.bot.prisma.guild.find_first(
             where={"snowflake": self.to_safe_snowflake(guild_id)},
@@ -31,16 +26,16 @@ class GuildService(CRUDXService):
             where={"snowflake": guild.snowflake},
             include={
                 "members": True,
-            }
+            },
         )
 
     async def exists_guild(self, guild_id: int) -> bool:
         self.bot.logger.debug(f"Checking if guild exists: {guild_id}")
         return (
-                await self.bot.prisma.guild.find_first(
-                    where={"snowflake": self.to_safe_snowflake(guild_id)}
-                )
-                is not None
+            await self.bot.prisma.guild.find_first(
+                where={"snowflake": self.to_safe_snowflake(guild_id)}
+            )
+            is not None
         )
 
     async def get_all_guilds(self) -> list[models.Guild]:

@@ -10,9 +10,7 @@ router = APIRouter()
 @router.post(
     "/messages/",
 )
-async def send_message(
-        message: MessageDANT, service: MessagingService = Depends(MessagingService)
-):
+async def send_message(message: MessageDANT, service: MessagingService = Depends(MessagingService)):
     try:
         message = await service.send_message(message.embed, message.channel_id)
     except Exception as exc:

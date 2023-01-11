@@ -41,17 +41,13 @@ class Command(Cog, GuildService):
             ).as_color(color)
         )
 
-
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:
 
         guilds = await self.get_all_guilds()
 
         fields = [
-            EmbedField(
-                name=f"#{i}",
-                value=f"{guild.snowflake}"
-            )
+            EmbedField(name=f"#{i}", value=f"{guild.snowflake}")
             for i, guild in enumerate(guilds, 1)
         ]
 
@@ -61,7 +57,6 @@ class Command(Cog, GuildService):
                 description=f"{md('Guilds'):bold}: {len(guilds)}",
                 fields=fields,
                 user=interaction.user,
-
             ).info
         )
 

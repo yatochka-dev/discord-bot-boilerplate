@@ -17,9 +17,7 @@ def db_required(coro):
 
         invoked_guild = interaction.guild
 
-        self.bot.logger.debug(
-            "Invoked guild: {}".format(invoked_guild)
-        )
+        self.bot.logger.debug("Invoked guild: {}".format(invoked_guild))
 
         invoked_user = (
             interaction.user
@@ -27,31 +25,19 @@ def db_required(coro):
             else interaction.user._user
         )
 
-        self.bot.logger.debug(
-            "Invoked user: {}".format(invoked_user)
-        )
+        self.bot.logger.debug("Invoked user: {}".format(invoked_user))
 
         invoked_member = (
-            interaction.author
-            if isinstance(interaction.user, disnake.Member)
-            else None
+            interaction.author if isinstance(interaction.user, disnake.Member) else None
         )
 
-        self.bot.logger.debug(
-            "Invoked member: {}".format(invoked_member)
-        )
+        self.bot.logger.debug("Invoked member: {}".format(invoked_member))
 
         service = CommunityService.set_bot(self.bot)
 
-        data = await service.process(
-            guild=invoked_guild,
-            user=invoked_user,
-            member=invoked_member
-        )
+        data = await service.process(guild=invoked_guild, user=invoked_user, member=invoked_member)
 
-        self.bot.logger.debug(
-            "Data: {}".format(data)
-        )
+        self.bot.logger.debug("Data: {}".format(data))
 
         if isinstance(data, GuildAndUser):
             interaction.guild_db = data.guild
