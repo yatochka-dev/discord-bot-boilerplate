@@ -5,6 +5,7 @@ from app.decorators import db_required
 from app.embedding import Embed
 from app.services.GuildService import GuildService
 from app.types import CommandInteraction
+from app.utils.embeds import create_embeds_from_fields
 
 
 class Command(Cog, GuildService):
@@ -40,6 +41,29 @@ class Command(Cog, GuildService):
                 user=interaction.user,
             ).as_color(color)
         )
+
+    @slash_command()
+    async def get_guild_info(self, inter: CommandInteraction):
+        guild_db = await self.get_guild(guild_id=inter.guild_id, include={"members": True})
+
+        fields = [
+            EmbedField(
+                name=f"#{index}",
+                value=f"{member.user!r}"
+            )
+            for index, member in enumerate(guild_db.members, 1)
+        ]
+
+        embed = Embed(
+            title="Guild",
+            user=inter.user,
+        )
+
+        embeds = create_embeds_from_fields(
+            embed, fields
+        )
+
+
 
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:

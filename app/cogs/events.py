@@ -71,7 +71,7 @@ class Events(Cog, GuildService, MemberService):
         "on_member_remove",
     )
     async def member_left(self, member: disnake.Member):
-        await self.remove_member(member)
+        await self.remove_member(member, ignore_not_found=True)
         self.bot.logger.info(f"Member left: {member} (ID: {member.id})")
 
 
