@@ -5,9 +5,10 @@ from disnake.ext.commands import Cog
 
 from app import Bot, Embed, md, CodeBlock
 from app.services.GuildService import GuildService
+from app.services.MemberService import MemberService
 
 
-class Events(Cog, GuildService):
+class Events(Cog, GuildService, MemberService):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -30,8 +31,8 @@ class Events(Cog, GuildService):
         self.bot.logger.info("------")
 
         for guild in self.bot.guilds:
-            if not await self.exists(guild.id):
-                await self.add(guild)
+            if not await self.exists_guild(guild.id):
+                await self.add_guild(guild)
                 self.bot.logger.info(f"Added guild: {guild.name} (ID: {guild.id})")
             else:
                 self.bot.logger.info(f"Guild already exists: {guild.name} (ID: {guild.id})")
@@ -40,13 +41,14 @@ class Events(Cog, GuildService):
         "on_guild_join",
     )
     async def joined_guild(self, guild: disnake.Guild):
-        await self.add(guild)
+        await self.add_guild(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
         embed = Embed(
             title="Thanks for adding me!",
             description=f"I'm a template bot for {md('Disnake'):bold}."
-            f"\n{CodeBlock(f'Start-Process -FilePath {self.bot.APP_SETTINGS.github_link}'):bash}",
+            f"\n"
+            f"{CodeBlock(f'Start-Process -FilePath {self.bot.APP_SETTINGS.github_link}'):bash}",
             user=guild.me,
         ).info
 
@@ -62,8 +64,15 @@ class Events(Cog, GuildService):
         "on_guild_remove",
     )
     async def quit_guild(self, guild):
-        await self.remove(guild)
+        await self.remove_guild(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
+
+    @Cog.listener(
+        "on_member_remove",
+    )
+    async def member_left(self, member: disnake.Member):
+        await self.remove_member(member)
+        self.bot.logger.info(f"Member left: {member} (ID: {member.id})")
 
 
 def setup(bot: Bot):

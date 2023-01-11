@@ -92,9 +92,9 @@ class Events(Cog, GuildService):
 
         # Use the is_guild_exists method from the GuildService class
         for guild in self.bot.guilds:
-            if not await self.exists(guild.id):
+            if not await self.exists_guild(guild.id):
                 # Use the add_guild method from the GuildService class
-                await self.add(guild)
+                await self.add_guild(guild)
                 self.bot.logger.info(
                     f"Added guild: {guild.name} (ID: {guild.id})"
                 )
@@ -109,7 +109,7 @@ class Events(Cog, GuildService):
     async def bot_joined_guild(self, guild):
         # Use the add_guild method from the GuildService class to add new 
         # guild when the bot joins a new guild 
-        await self.add(guild)
+        await self.add_guild(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
     @Cog.listener(
@@ -118,7 +118,7 @@ class Events(Cog, GuildService):
     async def bot_quit_guild(self, guild):
         # Use the remove_guild method from the GuildService class to remove
         # guild when the bot leaves a guild
-        await self.remove(guild)
+        await self.remove_guild(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
 
 
@@ -144,14 +144,14 @@ router = APIRouter()
 
 @router.get("/guilds/")
 async def getGuilds(service: GuildService = Depends(GuildService)):
-    return await service.get_all()
+    return await service.get_all_guilds()
 
 
 @router.get("/guilds/{guild_id}")
 async def is_guild_exists(
         guild_id: int, service: GuildService = Depends(GuildService)
 ):
-    return await service.exists(guild_id)
+    return await service.exists_guild(guild_id)
 
 
 ```
