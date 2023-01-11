@@ -36,4 +36,5 @@ class CodeBlock(DiscordFormattingMethod):
     def __format__(self, format_spec):
         return f"```{format_spec}\n{self.string}\n```"
 
+
 md = DiscordFormattingMethod

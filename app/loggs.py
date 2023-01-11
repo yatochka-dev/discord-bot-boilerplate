@@ -18,23 +18,23 @@ red_column = Fore.LIGHTRED_EX + ":" + Style.RESET_ALL
 red_dash = Fore.LIGHTRED_EX + " - " + Style.RESET_ALL
 
 FORMAT = (
-        Fore.GREEN
-        + "%(asctime)s "
-        + Style.RESET_ALL
-        + red_stick
-        + "{primary_color}\033[1m%(levelname)s\033[0m{spaces}"
-        + red_stick
-        + Fore.CYAN
-        + "%(filename)s"
-        + red_column
-        + Fore.CYAN
-        + "%(name)s"
-        + red_column
-        + Fore.CYAN
-        + "%(lineno)d"
-        + red_dash
-        + "{secondary_color}%(message)s"
-        + Style.RESET_ALL
+    Fore.GREEN
+    + "%(asctime)s "
+    + Style.RESET_ALL
+    + red_stick
+    + "{primary_color}\033[1m%(levelname)s\033[0m{spaces}"
+    + red_stick
+    + Fore.CYAN
+    + "%(filename)s"
+    + red_column
+    + Fore.CYAN
+    + "%(name)s"
+    + red_column
+    + Fore.CYAN
+    + "%(lineno)d"
+    + red_dash
+    + "{secondary_color}%(message)s"
+    + Style.RESET_ALL
 )
 
 

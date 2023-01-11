@@ -16,9 +16,7 @@ from .types import SupportsIntCast
 
 class AppSettings(BaseSettings):
     TESTING: bool = True
-    TIMEZONE = datetime.timezone(
-        offset=datetime.timedelta(hours=3), name="UTC"
-    )
+    TIMEZONE = datetime.timezone(offset=datetime.timedelta(hours=3), name="UTC")
 
     github_link = "https://github.com/yatochka-dev/discord-bot-boilerplate"
 
@@ -62,7 +60,7 @@ class Bot(InteractionBot):
         self.prisma = prisma
         self.disnake_logger = disnake_logger
 
-        disnake.mixins.Hashable.snowflake = snowflake # noqa
-        pydantic.main.BaseModel.id = id_ # noqa
+        disnake.mixins.Hashable.snowflake = snowflake  # noqa
+        pydantic.main.BaseModel.id = id_  # noqa
 
         super().__init__(*args, **kwargs, intents=intents)

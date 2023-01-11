@@ -1,6 +1,7 @@
 from disnake.ext.commands import Cog, slash_command
 
 from app import Bot, md, EmbedField
+from app.decorators import db_required
 from app.embedding import Embed
 from app.services.GuildService import GuildService
 from app.types import CommandInteraction
@@ -11,7 +12,9 @@ class Command(Cog, GuildService):
         self.bot = bot
 
     @slash_command()
+    @db_required
     async def ping(self, interaction: CommandInteraction) -> None:
+        print("Ping command")
         current_latency = round(self.bot.latency * 1000, 2)
 
         match current_latency:
@@ -41,13 +44,10 @@ class Command(Cog, GuildService):
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:
 
-        guilds = await self.get_all()
+        guilds = await self.get_all_guilds()
 
         fields = [
-            EmbedField(
-                name=f"#{i}",
-                value=f"{guild.snowflake}"
-            )
+            EmbedField(name=f"#{i}", value=f"{guild.snowflake}")
             for i, guild in enumerate(guilds, 1)
         ]
 
@@ -57,7 +57,6 @@ class Command(Cog, GuildService):
                 description=f"{md('Guilds'):bold}: {len(guilds)}",
                 fields=fields,
                 user=interaction.user,
-
             ).info
         )
 

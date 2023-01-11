@@ -13,18 +13,15 @@ class EmbedField:
         self.inline = inline
 
     def to_dict(self):
-        return {
-            "name": self.name,
-            "value": self.value,
-            "inline": self.inline
-        }
+        return {"name": self.name, "value": self.value, "inline": self.inline}
 
     def __str__(self):
         return f"{self.name} - {self.value}"
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.name!r}, {self.value!r}, " \
-               f"inline={self.inline!r})"
+        return (
+            f"{self.__class__.__name__}({self.name!r}, {self.value!r}, " f"inline={self.inline!r})"
+        )
 
 
 # Custom Embed
@@ -33,12 +30,12 @@ class Embed:
     BASE_AUTHOR_ICON_URL = Settings.ICON_URL
 
     def __init__(
-            self,
-            user: DiscordUtilizer,
-            thumbnail: bool = False,
-            fields: list[EmbedField] | tuple[EmbedField] = (),
-            *args,
-            **kwargs
+        self,
+        user: DiscordUtilizer,
+        thumbnail: bool = False,
+        fields: list[EmbedField] | tuple[EmbedField] = (),
+        *args,
+        **kwargs,
     ):
         self.user = user
         self.thumbnail = thumbnail
@@ -68,9 +65,7 @@ class Embed:
 
         return c
 
-    def as_color(
-            self, color: disnake.Color | tuple[int, int, int]
-    ) -> disnake.Embed:
+    def as_color(self, color: disnake.Color | tuple[int, int, int]) -> disnake.Embed:
 
         if isinstance(color, tuple):
             color = disnake.Color.from_rgb(*color)
