@@ -6,7 +6,6 @@ from .index import AppService
 
 
 class MessagingService(AppService):
-
     async def _form_embed(self, embed: EmbedDANT):
         fields = [
             EmbedField(

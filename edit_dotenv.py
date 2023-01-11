@@ -28,24 +28,17 @@ def get_vars(path):
 def add_variable(name, development, production):
     if not name:
         raise click.ClickException(
-            Fore.RED
-            + "Name of the environment variable is not provided"
-            + Style.RESET_ALL
+            Fore.RED + "Name of the environment variable is not provided" + Style.RESET_ALL
         )
 
-    if (
-        name in get_vars(".env.development").keys()
-        or name in get_vars(".env.production").keys()
-    ):
+    if name in get_vars(".env.development").keys() or name in get_vars(".env.production").keys():
         raise click.ClickException(
-            Fore.RED + "The environment variable with this name already "
-            "exists" + Style.RESET_ALL
+            Fore.RED + "The environment variable with this name already " "exists" + Style.RESET_ALL
         )
 
     if not development:
         development = click.prompt(
-            "Value of the environment variable for the development "
-            "environment",
+            "Value of the environment variable for the development " "environment",
             hide_input=True,
         )
 
@@ -63,9 +56,7 @@ def add_variable(name, development, production):
 
     # Success message
     click.echo(
-        Fore.GREEN
-        + f"Environment variable {name} has been successfully added"
-        + Style.RESET_ALL
+        Fore.GREEN + f"Environment variable {name} has been successfully added" + Style.RESET_ALL
     )
 
 
@@ -74,9 +65,7 @@ def create_files():
     """Create .env.development and .env.production files from template files"""
     if os.path.exists("./.env.development"):
         raise click.ClickException(
-            Fore.RED
-            + "File .env.development already exists!"
-            + Style.RESET_ALL
+            Fore.RED + "File .env.development already exists!" + Style.RESET_ALL
         )
 
     if os.path.exists("./.env.production"):
@@ -95,12 +84,8 @@ def create_files():
     if prod_token == "skip":
         prod_token = "REQUIRED_PRODUCTION_TOKEN"
 
-    development_content = "DISCORD_TOKEN={}\nSTATE_NAME=DEVELOPMENT".format(
-        dev_token
-    )
-    production_content = "DISCORD_TOKEN={}\nSTATE_NAME=PRODUCTION".format(
-        prod_token
-    )
+    development_content = "DISCORD_TOKEN={}\nSTATE_NAME=DEVELOPMENT".format(dev_token)
+    production_content = "DISCORD_TOKEN={}\nSTATE_NAME=PRODUCTION".format(prod_token)
 
     with open("./.env.development", "w") as f:
         f.write(development_content)

@@ -1,9 +1,12 @@
 from disnake.ext.commands import Cog, slash_command
 
 from app import Bot, md, EmbedField
+from app.decorators import db_required
 from app.embedding import Embed
 from app.services.GuildService import GuildService
 from app.types import CommandInteraction
+from app.utils.embeds import create_embeds_from_fields
+from app.views import PaginationView
 
 
 class Command(Cog, GuildService):
@@ -11,7 +14,9 @@ class Command(Cog, GuildService):
         self.bot = bot
 
     @slash_command()
-    async def ping(self, interaction: CommandInteraction) -> None:
+    @db_required
+    async def ping(self, inter: CommandInteraction) -> None:
+        print("Ping command")
         current_latency = round(self.bot.latency * 1000, 2)
 
         match current_latency:
@@ -30,24 +35,21 @@ class Command(Cog, GuildService):
             case _:
                 color = (0, 0, 0)
 
-        await interaction.send(
+        await inter.send(
             embed=Embed(
                 title="Pong!",
                 description=f"{md('Latency'):bold}:{current_latency}ms",
-                user=interaction.user,
+                user=inter.user,
             ).as_color(color)
         )
 
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:
 
-        guilds = await self.get_all()
+        guilds = await self.get_all_guilds()
 
         fields = [
-            EmbedField(
-                name=f"#{i}",
-                value=f"{guild.snowflake}"
-            )
+            EmbedField(name=f"#{i}", value=f"{guild.snowflake}")
             for i, guild in enumerate(guilds, 1)
         ]
 
@@ -57,7 +59,6 @@ class Command(Cog, GuildService):
                 description=f"{md('Guilds'):bold}: {len(guilds)}",
                 fields=fields,
                 user=interaction.user,
-
             ).info
         )
 
