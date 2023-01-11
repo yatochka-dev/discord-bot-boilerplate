@@ -30,8 +30,8 @@ class Events(Cog, GuildService):
         self.bot.logger.info("------")
 
         for guild in self.bot.guilds:
-            if not await self.exists(guild.id):
-                await self.add(guild)
+            if not await self.exists_guild(guild.id):
+                await self.add_guild(guild)
                 self.bot.logger.info(f"Added guild: {guild.name} (ID: {guild.id})")
             else:
                 self.bot.logger.info(f"Guild already exists: {guild.name} (ID: {guild.id})")
@@ -40,7 +40,7 @@ class Events(Cog, GuildService):
         "on_guild_join",
     )
     async def joined_guild(self, guild: disnake.Guild):
-        await self.add(guild)
+        await self.add_guild(guild)
         self.bot.logger.info(f"Joined guild: {guild.name} (ID: {guild.id})")
 
         embed = Embed(
@@ -62,7 +62,7 @@ class Events(Cog, GuildService):
         "on_guild_remove",
     )
     async def quit_guild(self, guild):
-        await self.remove(guild)
+        await self.remove_guild(guild)
         self.bot.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
 
 

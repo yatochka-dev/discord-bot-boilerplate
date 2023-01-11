@@ -6,7 +6,7 @@ from .index import CRUDXService
 
 class GuildService(CRUDXService):
 
-    async def add(self, guild: disnake.Guild) -> models.Guild:
+    async def add_guild(self, guild: disnake.Guild) -> models.Guild:
         self.bot.logger.debug(
             f"Adding guild: {guild.name} (ID: " f"{guild.id})"
         )
@@ -14,7 +14,7 @@ class GuildService(CRUDXService):
             data={"snowflake": guild.snowflake}
         )
 
-    async def get(self, guild_id: int) -> models.Guild:
+    async def get_guild(self, guild_id: int) -> models.Guild:
         self.bot.logger.debug(f"Getting guild by id: {guild_id}")
         guild: models.Guild = await self.bot.prisma.guild.find_first(
             where={"snowflake": self.to_safe_snowflake(guild_id)}
@@ -22,13 +22,13 @@ class GuildService(CRUDXService):
 
         return guild
 
-    async def remove(self, guild: disnake.Guild):
+    async def remove_guild(self, guild: disnake.Guild):
         self.bot.logger.debug(f"Removing guild: {guild.name} (ID: {guild.id})")
         return await self.bot.prisma.guild.delete(
             where={"snowflake": guild.snowflake}
         )
 
-    async def exists(self, guild_id: int) -> bool:
+    async def exists_guild(self, guild_id: int) -> bool:
         self.bot.logger.debug(f"Checking if guild exists: {guild_id}")
         return (
                 await self.bot.prisma.guild.find_first(
@@ -37,6 +37,7 @@ class GuildService(CRUDXService):
                 is not None
         )
 
-    async def get_all(self) -> list[models.Guild]:
+
+    async def get_all_guilds(self) -> list[models.Guild]:
         self.bot.logger.debug("Getting guilds list")
         return await self.bot.prisma.guild.find_many()

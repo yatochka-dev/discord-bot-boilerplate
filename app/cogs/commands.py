@@ -45,7 +45,7 @@ class Command(Cog, GuildService):
     @slash_command()
     async def guilds(self, interaction: CommandInteraction) -> None:
 
-        guilds = await self.get_all()
+        guilds = await self.get_all_guilds()
 
         fields = [
             EmbedField(
