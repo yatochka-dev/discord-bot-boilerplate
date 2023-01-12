@@ -33,7 +33,8 @@ model Member {
     user   User  @relation(fields: [userId], references: [snowflake])
     userId String
     guild   Guild  @relation(fields: [guildId], references: [snowflake])
-    guildId String
+    guildId String 
 
     @@id([userId, guildId])
 }
+

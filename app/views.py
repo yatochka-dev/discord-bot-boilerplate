@@ -3,16 +3,12 @@ from disnake import MessageInteraction
 from disnake.ui import Item, View
 
 from app import Bot, Embed
+from app.exceptions import BotException
 from app.types import DiscordUtilizer
 
 
-class ViewDispatchException(Exception):
-
-    def __init__(self, code: int):
-        self.code = code
-
-
 class BaseView(View):
+
     def __init__(self, bot: Bot, user: DiscordUtilizer, **kwargs):
         super().__init__(**kwargs)
         self.user = user
@@ -25,37 +21,19 @@ class BaseView(View):
                 1 - Forbidden
                 2 - Not found
         """
-        if interaction.user.bot:
-            raise ViewDispatchException(1)
-        if interaction.user.id != self.user.id:
-            raise ViewDispatchException(1)
+        BotException.assert_value(
+            not interaction.user.bot, error_code=403, message="This interaction can be used by bots"
+        )
 
+        BotException.assert_value(
+            interaction.user.id == self.user.id, error_code=403, message="You can't use this interaction"
+        )
         return True
 
     async def on_error(self, error: Exception, item: Item, interaction: MessageInteraction) -> None:
-        if isinstance(error, ViewDispatchException):
-            match error.code:
-                case 1:
-                    embed = Embed(
-                        title="Forbidden",
-                        description="You are not allowed to use this element.",
-                        user=self.user,
-                    ).error
+        if isinstance(error, BotException):
 
-                case 2:
-                    embed = Embed(
-                        title="Not found",
-                        description="The element you are trying to use was not found.",
-                        user=self.user,
-                    ).error
-
-                case _:
-                    embed = Embed(
-                        title="Error",
-                        description="An unknown error occured.",
-                        user=self.user,
-                    ).error
-            await interaction.send(embed=embed, ephemeral=True)
+            await interaction.send(embed=error.to_embed(user=interaction.user), ephemeral=True)
         else:
             await interaction.response.send_message("An unknown error occured.", ephemeral=True)
             raise error

@@ -1,15 +1,31 @@
 from disnake.ext.commands import CommandInvokeError as cmd_invoke_error
 
+from .embedding import Embed
 from .loggs import logger
+from .types import DiscordUtilizer
 
 
 class BotException(cmd_invoke_error):
     code: int
+    title: str = "Something went wrong, try again later"
     message: str
 
-    def __init__(self, code: int, message: str):
+    def __init__(self, code: int, message: str, title=None):
         self.code = code
         self.message = message
+
+        if title:
+            self.title = title
+
+    def to_embed(
+            self,
+            user: DiscordUtilizer
+    ):
+        return Embed(
+            title=self.title,
+            description=self.message,
+            user=user
+        ).error
 
     @classmethod
     def assert_value(cls, sequence: bool, error_code: int, message: str, *, warn: bool = False):
