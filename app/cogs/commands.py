@@ -44,7 +44,7 @@ class Command(Cog, GuildService):
         )
 
     @slash_command()
-    async def guilds(self, interaction: CommandInteraction) -> None:
+    async def guilds(self, inter: CommandInteraction) -> None:
 
         guilds = await self.get_all_guilds()
 
@@ -53,13 +53,23 @@ class Command(Cog, GuildService):
             for i, guild in enumerate(guilds, 1)
         ]
 
-        await interaction.send(
-            embed=Embed(
-                title="Guilds",
-                description=f"{md('Guilds'):bold}: {len(guilds)}",
-                fields=fields,
-                user=interaction.user,
-            ).info
+        embed = Embed(
+            title="Guilds",
+            description=f"{md('Guilds'):bold}: {len(guilds)}",
+            user=inter.user,
+        )
+
+        embeds = create_embeds_from_fields(
+            embed, fields, max_size=1,
+        )
+
+        view = PaginationView(
+            bot=self.bot, user=inter.user, pages=embeds
+        )
+
+        await inter.send(
+            embed=embeds[0],
+            view=view
         )
 
 
