@@ -3,7 +3,7 @@ import os
 import disnake
 from disnake.ext.commands import Cog
 
-from app import Bot, Embed, md, CodeBlock
+from app import Bot, Embed, md, cb
 from app.services.GuildService import GuildService
 from app.services.MemberService import MemberService
 
@@ -48,7 +48,7 @@ class Events(Cog, GuildService, MemberService):
             title="Thanks for adding me!",
             description=f"I'm a template bot for {md('Disnake'):bold}."
             f"\n"
-            f"{CodeBlock(f'Start-Process -FilePath {self.bot.APP_SETTINGS.github_link}'):bash}",
+            f"{cb(f'Start-Process -FilePath {self.bot.APP_SETTINGS.github_link}'):bash}",
             user=guild.me,
         ).info
 

@@ -1,4 +1,4 @@
-__all__ = ["md", "CodeBlock"]
+__all__ = ["md", "cb"]
 
 
 class DiscordFormattingMethod:
@@ -38,3 +38,4 @@ class CodeBlock(DiscordFormattingMethod):
 
 
 md = DiscordFormattingMethod
+cb = CodeBlock
